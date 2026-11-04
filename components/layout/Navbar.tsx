@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { RemoraLogo } from "./RemoraLogo";
+import { RemoraLogo } from "@/components/shared/RemoraLogo";
 
 interface NavItem {
   name: string;
@@ -13,25 +13,25 @@ interface NavItem {
 }
 
 const NAV_LINKS: NavItem[] = [
-  { name: "Why", href: "/#why" },
   { name: "How it works", href: "/#how-it-works" },
+  { name: "Docs", href: "/#docs" },
   { name: "Capabilities", href: "/#capabilities" },
+  { name: "Why", href: "/#why" },
   { name: "Reviews", href: "/#reviews" },
   { name: "FAQ", href: "/#faq" },
-  { name: "Pricing", href: "/pricing" },
 ];
 
 export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="w-full border-b border-neutral-100 bg-white/80 backdrop-blur-xs sticky top-0 z-30">
+    <header className="w-full border-b border-neutral-100 bg-[#f2f2f2]/80 backdrop-blur-xs sticky top-0 z-30">
       <div className="w-full px-6 sm:px-8 h-14 flex items-center justify-between gap-4">
         {/* Left: Brand + Navigation links with active route indicator */}
         <div className="flex items-center gap-6 shrink-0">
           <Link
             href="/"
-            className="flex items-center gap-2.5 font-semibold text-[17px] tracking-[-0.03em] text-neutral-950 hover:opacity-85 transition-opacity leading-none -translate-y-[1px] group"
+            className="flex items-center gap-2.5 font-semibold text-[17px] tracking-[-0.03em] text-neutral-950 hover:opacity-85 transition-opacity leading-none -translate-y-px group"
           >
             <RemoraLogo className="w-6 h-6 text-[#2496ED] shrink-0 transition-transform group-hover:scale-105" size={24} />
             <span>REMORA</span>
@@ -48,7 +48,7 @@ export function Navbar() {
                   >
                     <span>{item.name}</span>
                     {item.badge && (
-                      <span className="text-[9px] font-mono uppercase tracking-wider px-1 py-0.2 rounded-[4px] bg-neutral-100 text-neutral-400 font-normal">
+                      <span className="text-[9px] font-mono uppercase tracking-wider px-1 py-0.2 rounded-sm bg-neutral-100 text-neutral-400 font-normal">
                         {item.badge}
                       </span>
                     )}
@@ -72,19 +72,18 @@ export function Navbar() {
                 >
                   <span>{item.name}</span>
                   {item.badge && (
-                    <span className="text-[9px] font-mono uppercase tracking-wider px-1 py-0.2 rounded-[4px] bg-neutral-100 text-neutral-400 font-normal">
+                    <span className="text-[9px] font-mono uppercase tracking-wider px-1 py-0.2 rounded-sm bg-neutral-100 text-neutral-400 font-normal">
                       {item.badge}
                     </span>
                   )}
                   {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#2496ED]" />
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#2496ED]" />
                   )}
                 </Link>
               );
             })}
           </nav>
         </div>
-
 
         {/* Right actions: perfectly height-matched & centered */}
         <div className="flex items-center gap-2 shrink-0">

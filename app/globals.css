@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f2f2f2;
   --foreground: #09090b;
 }
 
@@ -31,6 +31,25 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", -system-ui, "Inter", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   letter-spacing: -0.014em;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11", "calt", "kern";
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
 
 @keyframes aura-flow {
@@ -86,7 +105,6 @@ body {
   background-size: 250% 250%;
   animation: cell-flow 4s ease-in-out infinite;
 }
-
 
 @keyframes letter-up-out {
   0% {

@@ -19,9 +19,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white text-neutral-900 antialiased font-sans selection:bg-[#2496ED] selection:text-white">
+      <body className="min-h-screen bg-[#f2f2f2] text-neutral-900 antialiased font-sans selection:bg-[#2496ED] selection:text-white">
         {children}
       </body>
     </html>
   );
 }
+

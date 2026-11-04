@@ -179,7 +179,7 @@ export function LoginOceanSide() {
       className="hidden lg:flex lg:w-1/2 min-h-screen relative overflow-hidden flex-col items-center justify-center select-none cursor-default"
     >
       {/* 1. Left Vertical Stepped Shoreline Boundary: 14x14 pixel blocks */}
-      <div className="absolute top-0 bottom-0 left-0 w-[56px] overflow-hidden pointer-events-none z-30">
+      <div className="absolute top-0 bottom-0 left-0 w-14 overflow-hidden pointer-events-none z-30">
         <svg
           className="w-full h-full block"
           xmlns="http://www.w3.org/2000/svg"
@@ -211,7 +211,7 @@ export function LoginOceanSide() {
       </div>
 
       {/* 2. Deep Blue Ocean Surface Background */}
-      <div className="absolute top-0 bottom-0 left-[56px] right-0 bg-[#2496ED] z-10" />
+      <div className="absolute top-0 bottom-0 left-14 right-0 bg-[#2496ED] z-10" />
 
       {/* 3. Interactive 14x14 Grid Square Canvas */}
       <canvas
@@ -221,3 +221,4 @@ export function LoginOceanSide() {
     </div>
   );
 }
+

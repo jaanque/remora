@@ -209,7 +209,7 @@ function PixelContractVisual() {
       <rect x="30" y="57" width="40" height="3" fill={P_SLATE} />
 
       {/* Socket Indentation Notch (Female Joint) */}
-      <rect x="52" y="32" width="18" height="16" fill="#FFFFFF" />
+      <rect x="52" y="32" width="18" height="16" fill="#f2f2f2" />
       <rect x="52" y="32" width="18" height="2" fill={P_MUTED} />
       <rect x="52" y="32" width="2" height="16" fill={P_MUTED} />
       <rect x="52" y="46" width="18" height="2" fill={P_LIGHT} />
@@ -332,7 +332,7 @@ export function AgentFeatures() {
       {/* Asymmetric Bento Grid (desalineada / staggered 7+5 and 5+7) */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
         {/* Card 1: 80% Token reduction (Wide 7-span) */}
-        <div className="col-span-1 md:col-span-7 rounded-[16px] border border-neutral-200/80 bg-white p-5 sm:p-6 transition-all duration-200 hover:border-neutral-300 hover:shadow-2xs flex flex-col justify-between min-h-[250px] group cursor-default">
+        <div className="col-span-1 md:col-span-7 rounded-[16px] border border-neutral-200/80 bg-[#f2f2f2] p-5 sm:p-6 transition-all duration-200 hover:border-neutral-300 hover:shadow-2xs flex flex-col justify-between min-h-[250px] group cursor-default">
           <div>
             <h3 className="text-[16px] font-semibold text-neutral-950 mb-1.5">
               80% Token reduction
@@ -349,7 +349,7 @@ export function AgentFeatures() {
         </div>
 
         {/* Card 2: Sub-second streaming (Compact 5-span) */}
-        <div className="col-span-1 md:col-span-5 rounded-[16px] border border-neutral-200/80 bg-white p-5 sm:p-6 transition-all duration-200 hover:border-neutral-300 hover:shadow-2xs flex flex-col justify-between min-h-[250px] group cursor-default">
+        <div className="col-span-1 md:col-span-5 rounded-[16px] border border-neutral-200/80 bg-[#f2f2f2] p-5 sm:p-6 transition-all duration-200 hover:border-neutral-300 hover:shadow-2xs flex flex-col justify-between min-h-[250px] group cursor-default">
           <div>
             <h3 className="text-[16px] font-semibold text-neutral-950 mb-1.5">
               Sub-second streaming
@@ -366,7 +366,7 @@ export function AgentFeatures() {
         </div>
 
         {/* Card 3: Deterministic type contracts (Compact 5-span) */}
-        <div className="col-span-1 md:col-span-5 rounded-[16px] border border-neutral-200/80 bg-white p-5 sm:p-6 transition-all duration-200 hover:border-neutral-300 hover:shadow-2xs flex flex-col justify-between min-h-[250px] group cursor-default">
+        <div className="col-span-1 md:col-span-5 rounded-[16px] border border-neutral-200/80 bg-[#f2f2f2] p-5 sm:p-6 transition-all duration-200 hover:border-neutral-300 hover:shadow-2xs flex flex-col justify-between min-h-[250px] group cursor-default">
           <div>
             <h3 className="text-[16px] font-semibold text-neutral-950 mb-1.5">
               Deterministic type contracts
@@ -383,7 +383,7 @@ export function AgentFeatures() {
         </div>
 
         {/* Card 4: Continuous Git sync (Wide 7-span) */}
-        <div className="col-span-1 md:col-span-7 rounded-[16px] border border-neutral-200/80 bg-white p-5 sm:p-6 transition-all duration-200 hover:border-neutral-300 hover:shadow-2xs flex flex-col justify-between min-h-[250px] group cursor-default">
+        <div className="col-span-1 md:col-span-7 rounded-[16px] border border-neutral-200/80 bg-[#f2f2f2] p-5 sm:p-6 transition-all duration-200 hover:border-neutral-300 hover:shadow-2xs flex flex-col justify-between min-h-[250px] group cursor-default">
           <div>
             <h3 className="text-[16px] font-semibold text-neutral-950 mb-1.5">
               Continuous Git sync
@@ -402,3 +402,5 @@ export function AgentFeatures() {
     </section>
   );
 }
+
+

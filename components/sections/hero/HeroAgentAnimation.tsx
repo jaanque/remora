@@ -8,7 +8,7 @@ import {
   CursorLogo,
   CopilotLogo,
   DeepSeekLogo,
-} from "./AiLogos";
+} from "@/components/shared/AiLogos";
 
 const models = [
   {
@@ -87,7 +87,7 @@ export function HeroAgentAnimation() {
         ))}
 
         {/* Inner pill surface */}
-        <span className="relative rounded-[7.5px] bg-neutral-100/90 sm:bg-white px-2.5 sm:px-3 h-7.5 sm:h-8.5 flex items-center gap-2 z-10 shadow-2xs">
+        <span className="relative rounded-[7.5px] bg-neutral-100/90 sm:bg-[#f2f2f2] px-2.5 sm:px-3 h-7.5 sm:h-8.5 flex items-center gap-2 z-10 shadow-2xs">
           {/* Animated Icon */}
           <span
             key={`icon-${modelIndex}-${isExiting ? "out" : "in"}`}
@@ -123,3 +123,6 @@ export function HeroAgentAnimation() {
     </span>
   );
 }
+
+
+

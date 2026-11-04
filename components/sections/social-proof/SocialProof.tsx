@@ -127,7 +127,7 @@ export function SocialProof() {
                   onClick={() => scrollToCard(idx)}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left cursor-pointer transition-all duration-200 ${
                     isActive
-                      ? "bg-white shadow-sm border border-neutral-200/90 text-neutral-950"
+                      ? "bg-[#f2f2f2] shadow-sm border border-neutral-200/90 text-neutral-950"
                       : "hover:bg-neutral-100/70 border border-transparent text-neutral-600 hover:text-neutral-900 opacity-70 hover:opacity-100"
                   }`}
                 >
@@ -179,7 +179,7 @@ export function SocialProof() {
               className={`sticky top-28 sm:top-32 ${t.zIndex} mb-[60vh] sm:mb-[75vh]`}
             >
               <div
-                className={`w-full rounded-[16px] border border-neutral-200/90 bg-white p-6 sm:p-7 ${t.tiltClass} ${t.shadowClass} transition-transform duration-200 hover:rotate-0 hover:scale-[1.01]`}
+                className={`w-full rounded-[16px] border border-neutral-200/90 bg-[#f2f2f2] p-6 sm:p-7 ${t.tiltClass} ${t.shadowClass} transition-transform duration-200 hover:rotate-0 hover:scale-[1.01]`}
               >
                 {/* Quote text only */}
                 <p className="text-[15px] sm:text-[15.5px] text-neutral-800 leading-relaxed font-normal">
@@ -213,3 +213,5 @@ export function SocialProof() {
     </section>
   );
 }
+
+

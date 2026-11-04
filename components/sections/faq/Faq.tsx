@@ -55,7 +55,7 @@ export function Faq() {
       </div>
 
       {/* Accordion List */}
-      <div className="rounded-[16px] border border-neutral-200/80 bg-white overflow-hidden divide-y divide-neutral-100">
+      <div className="rounded-[16px] border border-neutral-200/80 bg-[#f2f2f2] overflow-hidden divide-y divide-neutral-100">
         {FAQS.map((item, idx) => {
           const isOpen = openIndex === idx;
 
@@ -110,4 +110,6 @@ export function Faq() {
     </section>
   );
 }
+
+
 

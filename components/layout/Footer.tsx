@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useCallback } from "react";
-import { RemoraLogo } from "./RemoraLogo";
+import { RemoraLogo } from "@/components/shared/RemoraLogo";
 
 // Stepped column heights (in 14px units) for seamless skyline transition
 // Perfect 1:1 SQUARE proportions (14px width x 14px step height)
@@ -321,7 +321,7 @@ export function Footer() {
       ref={footerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full mt-auto flex flex-col bg-white cursor-default select-none overflow-hidden"
+      className="relative w-full mt-auto flex flex-col bg-[#f2f2f2] cursor-default select-none overflow-hidden"
     >
       {/* Grid of static squares canvas: handles in-place color change on mouse pass */}
       <canvas
@@ -397,3 +397,6 @@ export function Footer() {
     </footer>
   );
 }
+
+
+
