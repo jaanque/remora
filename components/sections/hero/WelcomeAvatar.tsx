@@ -203,7 +203,7 @@ export function WelcomeAvatar({ isMcpHovered }: WelcomeAvatarProps) {
   if (!mounted) {
     return (
       <div className="flex items-center gap-3.5 mb-6 select-none">
-        <div className="w-[52px] h-[52px] rounded-[12px] bg-sky-50 animate-pulse shrink-0" />
+        <div className="w-13 h-13 rounded-xl bg-sky-50 animate-pulse shrink-0" />
         <div className="space-y-1">
           <div className="h-4 w-28 bg-neutral-100 rounded animate-pulse" />
           <div className="h-3.5 w-44 bg-neutral-100 rounded animate-pulse" />
@@ -220,7 +220,7 @@ export function WelcomeAvatar({ isMcpHovered }: WelcomeAvatarProps) {
         onClick={rollNewAvatar}
         title="Click to meet another avatar"
         style={{ width: "52px", height: "52px", maxWidth: "52px", maxHeight: "52px" }}
-        className="w-[52px] h-[52px] max-w-[52px] max-h-[52px] shrink-0 transition-transform hover:scale-105 active:scale-95 cursor-pointer relative bg-transparent border-0 p-0"
+        className="w-13 h-13 max-w-13 max-h-13 shrink-0 transition-transform hover:scale-105 active:scale-95 cursor-pointer relative bg-transparent border-0 p-0"
       >
         <Blobatar
           name={seed}

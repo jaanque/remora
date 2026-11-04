@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/dashboard";
+  const next = searchParams.get("next") ?? "/";
 
   if (code) {
     const supabase = await createClient();
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     }
   }
 
-  // If there's an error, redirect to login with error parameter
-  return NextResponse.redirect(`${origin}/login?error=auth-code-error`);
+  // If there's an error, redirect to home
+  return NextResponse.redirect(`${origin}/`);
 }
 
