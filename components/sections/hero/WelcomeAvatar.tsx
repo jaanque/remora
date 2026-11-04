@@ -15,7 +15,7 @@ const GREETINGS = [
 // Unified canonical Docker Blue (#2496ED)
 const DOCKER_PALETTE = {
   head: "#2496ED",
-  bg: "#eaf5fd",
+  bg: "transparent",
   eye: "#052e54",
 };
 
@@ -50,7 +50,7 @@ export function WelcomeAvatar({ isMcpHovered }: WelcomeAvatarProps) {
   const originalEyePathsRef = useRef<{ path: SVGPathElement; d: string }[]>([]);
 
   const rollNewAvatar = () => {
-    const uniqueSeed = `remora-docker-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+    const uniqueSeed = `remora-docker-${Math.random().toString(36).substring(2, 12)}`;
     const randomGreeting =
       GREETINGS[Math.floor(Math.random() * GREETINGS.length)];
     originalEyePathsRef.current = [];
@@ -59,8 +59,11 @@ export function WelcomeAvatar({ isMcpHovered }: WelcomeAvatarProps) {
   };
 
   useEffect(() => {
-    rollNewAvatar();
-    setMounted(true);
+    const timer = setTimeout(() => {
+      rollNewAvatar();
+      setMounted(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // Periodic star eyes blink every 3.8 seconds
@@ -217,7 +220,7 @@ export function WelcomeAvatar({ isMcpHovered }: WelcomeAvatarProps) {
         onClick={rollNewAvatar}
         title="Click to meet another avatar"
         style={{ width: "52px", height: "52px", maxWidth: "52px", maxHeight: "52px" }}
-        className="w-[52px] h-[52px] max-w-[52px] max-h-[52px] rounded-[12px] overflow-hidden shrink-0 transition-transform hover:scale-105 active:scale-95 cursor-pointer relative"
+        className="w-[52px] h-[52px] max-w-[52px] max-h-[52px] shrink-0 transition-transform hover:scale-105 active:scale-95 cursor-pointer relative bg-transparent border-0 p-0"
       >
         <Blobatar
           name={seed}
