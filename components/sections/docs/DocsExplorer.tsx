@@ -1,32 +1,13 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
-import {
-  StripeLogo,
-  GitHubLogo,
-  SupabaseLogo,
-  OpenAiLogo,
-  AnthropicLogo,
-  NextjsLogo,
-  DockerLogo,
-  LinearLogo,
-  PrismaLogo,
-  CloudflareLogo,
-} from "@/components/docs/PlatformLogos";
-
-const PLATFORMS = [
-  { name: "Stripe", logo: <StripeLogo className="w-7 h-7" /> },
-  { name: "GitHub", logo: <GitHubLogo className="w-7 h-7" /> },
-  { name: "Supabase", logo: <SupabaseLogo className="w-7 h-7" /> },
-  { name: "OpenAI", logo: <OpenAiLogo className="w-7 h-7" /> },
-  { name: "Anthropic", logo: <AnthropicLogo className="w-7 h-7" /> },
-  { name: "Next.js", logo: <NextjsLogo className="w-7 h-7" /> },
-  { name: "Docker", logo: <DockerLogo className="w-7 h-7" /> },
-  { name: "Linear", logo: <LinearLogo className="w-7 h-7" /> },
-  { name: "Prisma", logo: <PrismaLogo className="w-7 h-7" /> },
-  { name: "Cloudflare", logo: <CloudflareLogo className="w-7 h-7" /> },
-];
+import { renderPlatformLogo } from "@/components/docs/PlatformLogos";
+import { usePlatforms } from "@/logic/docs";
 
 export function DocsExplorer() {
+  const { platforms, isLoading } = usePlatforms(24);
+
   return (
     <section id="docs" className="pt-2 overflow-hidden">
       {/* Title & Link to Full Directory */}
@@ -56,24 +37,47 @@ export function DocsExplorer() {
         </Link>
       </div>
 
-      {/* Infinite Horizontal Looping Marquee */}
-      <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-        <div className="animate-marquee flex items-center gap-3 py-1">
-          {/* Double list to create seamless infinite loop */}
-          {[...PLATFORMS, ...PLATFORMS].map((platform, idx) => (
-            <Link
-              key={`${platform.name}-${idx}`}
-              href="/docs"
-              className="rounded-[14px] border border-neutral-300/80 bg-[#f2f2f2] px-4.5 py-3 flex items-center gap-3 shrink-0 select-none hover:border-neutral-400 transition-colors shadow-2xs cursor-pointer"
-            >
-              {platform.logo}
-              <span className="text-[14.5px] font-semibold text-neutral-950 whitespace-nowrap">
-                {platform.name}
-              </span>
-            </Link>
+      {/* Dynamic Looping Marquee */}
+      {isLoading ? (
+        <div className="flex items-center gap-3 py-1 overflow-hidden">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div
+              key={i}
+              className="h-12 w-36 rounded-[14px] border border-neutral-300/80 bg-[#f2f2f2] animate-pulse shrink-0"
+            />
           ))}
         </div>
-      </div>
+      ) : platforms.length > 0 ? (
+        <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+          <div className="animate-marquee flex items-center gap-3 py-1">
+            {/* Double list to create seamless infinite loop */}
+            {[...platforms, ...platforms].map((platform, idx) => (
+              <Link
+                key={`${platform.slug}-${idx}`}
+                href={`/docs/${platform.slug}`}
+                className="rounded-[14px] border border-neutral-300/80 bg-[#f2f2f2] px-4.5 py-3 flex items-center gap-3 shrink-0 select-none hover:border-neutral-400 transition-colors shadow-2xs cursor-pointer group active:scale-[0.98]"
+              >
+                <div className="w-7 h-7 shrink-0 transition-transform group-hover:scale-105">
+                  {renderPlatformLogo(platform.logo_key ?? platform.slug, "w-7 h-7")}
+                </div>
+                <span className="text-[14.5px] font-semibold text-neutral-950 whitespace-nowrap group-hover:text-[#2496ED] transition-colors">
+                  {platform.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="rounded-[14px] border border-neutral-300/80 bg-white/60 p-6 text-center">
+          <p className="text-xs text-neutral-500">
+            Explora el{" "}
+            <Link href="/docs" className="text-[#2496ED] underline font-medium">
+              directorio de documentación
+            </Link>{" "}
+            para consultar las especificaciones disponibles.
+          </p>
+        </div>
+      )}
     </section>
   );
 }

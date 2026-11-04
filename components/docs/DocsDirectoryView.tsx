@@ -1,35 +1,53 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React from "react";
+import Link from "next/link";
 import { DocsNavbar } from "@/components/layout/DocsNavbar";
 import { Footer } from "@/components/layout/Footer";
-import { DOCUMENTATIONS, type DocItem } from "@/lib/docs/docs-data";
+import { renderPlatformLogo } from "@/components/docs/PlatformLogos";
+import { type DocItem, useDocs } from "@/logic/docs";
 
-export function DocsDirectoryView() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDoc, setSelectedDoc] = useState<DocItem | null>(null);
-  const [isCopied, setIsCopied] = useState(false);
+interface DocsDirectoryViewProps {
+  initialDocs?: DocItem[];
+}
 
-  // Filter documentations based solely on search query
-  const filteredDocs = useMemo(() => {
-    if (!searchQuery.trim()) return DOCUMENTATIONS;
+function getPageNumbers(current: number, total: number): (number | string)[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
 
-    const q = searchQuery.toLowerCase().trim();
-    return DOCUMENTATIONS.filter((doc) => {
-      const matchName = doc.name.toLowerCase().includes(q);
-      const matchDesc = doc.description.toLowerCase().includes(q);
-      const matchTags = doc.tags.some((t) => t.toLowerCase().includes(q));
-      return matchName || matchDesc || matchTags;
-    });
-  }, [searchQuery]);
+  if (current <= 3) {
+    return [1, 2, 3, 4, "...", total];
+  }
 
-  const handleCopyEndpoint = (doc: DocItem) => {
-    const endpoint = `https://api.remora.dev/v1/docs/${doc.slug}.json`;
-    if (navigator?.clipboard) {
-      navigator.clipboard.writeText(endpoint);
-    }
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
+  if (current >= total - 2) {
+    return [1, "...", total - 3, total - 2, total - 1, total];
+  }
+
+  return [1, "...", current - 1, current, current + 1, "...", total];
+}
+
+export function DocsDirectoryView({ initialDocs }: DocsDirectoryViewProps) {
+  const {
+    paginatedDocs,
+    isLoading,
+    searchQuery,
+    setSearchQuery,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    totalCount,
+  } = useDocs(initialDocs);
+
+  const getLogo = (doc: DocItem) => {
+    if (doc.logo) return doc.logo;
+    return renderPlatformLogo(doc.logo_key ?? doc.logoKey ?? doc.slug);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    setCurrentPage(newPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -84,149 +102,163 @@ export function DocsDirectoryView() {
           )}
         </div>
 
-        {/* Grid: Only Logo, Title, Mini-Paragraph, and Read Button */}
-        {filteredDocs.length > 0 ? (
+        {/* Loading state */}
+        {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {filteredDocs.map((doc) => (
+            {Array.from({ length: 6 }).map((_, i) => (
               <div
-                key={doc.id}
-                className="rounded-[14px] border border-neutral-300/80 bg-[#f2f2f2] hover:border-neutral-400 p-4.5 flex flex-col justify-between transition-colors shadow-2xs select-none"
+                key={i}
+                className="rounded-[14px] border border-neutral-300/80 bg-[#f2f2f2] p-4.5 flex flex-col justify-between shadow-2xs animate-pulse"
               >
                 <div>
-                  {/* 1. Logo */}
-                  <div className="w-8 h-8 shrink-0 mb-3">
-                    {doc.logo}
+                  <div className="w-8 h-8 rounded-lg bg-neutral-300/70 mb-3" />
+                  <div className="h-4 w-32 rounded-md bg-neutral-300/80 mb-2" />
+                  <div className="space-y-1.5 mt-1">
+                    <div className="h-3.5 w-full rounded bg-neutral-300/50" />
+                    <div className="h-3.5 w-4/5 rounded bg-neutral-300/40" />
                   </div>
-
-                  {/* 2. Titulo */}
-                  <h2 className="text-[15px] font-semibold text-neutral-950 leading-snug">
-                    {doc.name}
-                  </h2>
-
-                  {/* 3. Mini Parrafo */}
-                  <p className="text-[13px] text-neutral-600 mt-1 leading-relaxed line-clamp-2">
-                    {doc.description}
-                  </p>
                 </div>
-
-                {/* 4. Boton de leer */}
                 <div className="mt-4 pt-3 border-t border-neutral-300/60 flex items-center justify-between">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedDoc(doc)}
-                    className="h-8 px-3 rounded-lg bg-white hover:bg-neutral-100 active:scale-95 border border-neutral-300/80 text-xs font-medium text-neutral-900 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
-                  >
-                    <span>Leer</span>
-                    <svg
-                      className="w-3.5 h-3.5 text-neutral-500"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                    >
-                      <path
-                        d="M6 3.5L10.5 8L6 12.5"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
+                  <div className="h-8 w-16 rounded-lg bg-neutral-300/60" />
                 </div>
               </div>
             ))}
           </div>
+        ) : paginatedDocs.length > 0 ? (
+          <>
+            {/* Grid: 15 Cards per page */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {paginatedDocs.map((doc) => (
+                <Link
+                  key={doc.id}
+                  href={`/docs/${doc.slug}`}
+                  className="rounded-[14px] border border-neutral-300/80 bg-[#f2f2f2] hover:border-neutral-400 p-4.5 flex flex-col justify-between transition-all duration-150 shadow-2xs select-none group cursor-pointer hover:shadow-xs active:scale-[0.99]"
+                >
+                  <div>
+                    {/* 1. Logo */}
+                    <div className="w-8 h-8 shrink-0 mb-3 transition-transform group-hover:scale-105">
+                      {getLogo(doc)}
+                    </div>
+
+                    {/* 2. Titulo */}
+                    <h2 className="text-[15px] font-semibold text-neutral-950 leading-snug group-hover:text-[#2496ED] transition-colors">
+                      {doc.name}
+                    </h2>
+
+                    {/* 3. Mini Parrafo */}
+                    <p className="text-[13px] text-neutral-600 mt-1 leading-relaxed line-clamp-2">
+                      {doc.description}
+                    </p>
+                  </div>
+
+                  {/* 4. Indicador de accion "Leer" */}
+                  <div className="mt-4 pt-3 border-t border-neutral-300/60 flex items-center justify-between">
+                    <span className="h-8 px-3 rounded-lg bg-white group-hover:bg-neutral-100 border border-neutral-300/80 text-xs font-medium text-neutral-900 transition-colors flex items-center gap-1.5 shadow-2xs">
+                      <span>Leer</span>
+                      <svg
+                        className="w-3.5 h-3.5 text-neutral-500 transition-transform group-hover:translate-x-0.5"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M6 3.5L10.5 8L6 12.5"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Simple & Clean Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="mt-10 pt-6 border-t border-neutral-300/60 flex items-center justify-between gap-4 select-none">
+                {/* Previous button */}
+                <button
+                  type="button"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage <= 1}
+                  className="h-8 px-3 rounded-lg border border-neutral-300/80 bg-white hover:bg-neutral-100 text-xs font-medium text-neutral-700 disabled:opacity-35 disabled:hover:bg-white disabled:cursor-not-allowed transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer active:scale-95"
+                >
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M10 12.5L5.5 8L10 3.5"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <span>Anterior</span>
+                </button>
+
+                {/* Desktop: Numeric Page buttons */}
+                <div className="hidden sm:flex items-center gap-1">
+                  {getPageNumbers(currentPage, totalPages).map((p, idx) =>
+                    p === "..." ? (
+                      <span key={`dots-${idx}`} className="px-2 text-xs text-neutral-400">
+                        ...
+                      </span>
+                    ) : (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => handlePageChange(Number(p))}
+                        className={`w-8 h-8 rounded-lg text-xs font-medium transition-colors shadow-2xs cursor-pointer ${
+                          currentPage === p
+                            ? "bg-neutral-950 text-white border border-neutral-950 font-semibold"
+                            : "bg-white text-neutral-700 border border-neutral-300/80 hover:bg-neutral-100"
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    )
+                  )}
+                </div>
+
+                {/* Mobile: Compact Page indicator */}
+                <span className="sm:hidden text-xs text-neutral-500 font-medium">
+                  {currentPage} / {totalPages}
+                </span>
+
+                {/* Next button */}
+                <button
+                  type="button"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage >= totalPages}
+                  className="h-8 px-3 rounded-lg border border-neutral-300/80 bg-white hover:bg-neutral-100 text-xs font-medium text-neutral-700 disabled:opacity-35 disabled:hover:bg-white disabled:cursor-not-allowed transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer active:scale-95"
+                >
+                  <span>Siguiente</span>
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M6 3.5L10.5 8L6 12.5"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <div className="rounded-[14px] border border-neutral-300/80 bg-white p-10 text-center max-w-sm mx-auto my-8">
             <p className="text-sm font-semibold text-neutral-900">
-              No se encontraron resultados
+              {searchQuery ? "No se encontraron resultados" : "No hay documentaciones disponibles"}
             </p>
             <p className="text-xs text-neutral-500 mt-1">
-              No hay coincidencias para &quot;{searchQuery}&quot;.
+              {searchQuery
+                ? `No hay coincidencias para "${searchQuery}".`
+                : "Inserta registros en la tabla 'docs' de Supabase para ver las cards aquí."}
             </p>
           </div>
         )}
       </div>
-
-      {/* Reader Modal when clicking "Leer" */}
-      {selectedDoc && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-50 bg-neutral-950/40 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
-          onClick={() => setSelectedDoc(null)}
-        >
-          <div
-            className="w-full max-w-lg rounded-[18px] bg-[#f2f2f2] border border-neutral-300/90 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.18)] p-6 space-y-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 shrink-0">{selectedDoc.logo}</div>
-                <div>
-                  <h3 className="text-base font-bold text-neutral-950">
-                    {selectedDoc.name}
-                  </h3>
-                  <p className="text-xs text-neutral-500 font-mono">
-                    remora.dev/docs/{selectedDoc.slug}.json
-                  </p>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setSelectedDoc(null)}
-                className="w-7 h-7 rounded-full bg-neutral-200/80 hover:bg-neutral-300 text-neutral-600 flex items-center justify-center text-xs transition-colors cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <div>
-              <p className="text-xs text-neutral-700 leading-relaxed">
-                {selectedDoc.description}
-              </p>
-
-              {/* AST Schema Preview */}
-              <div className="mt-3 p-3 rounded-[10px] bg-neutral-900 text-neutral-200 font-mono text-[11px] leading-relaxed overflow-x-auto">
-                <div className="text-neutral-400">
-                  {"// Machine-native schema snippet for AI agents"}
-                </div>
-                <div>{`{`}</div>
-                <div className="pl-3">{`"module": "${selectedDoc.slug}",`}</div>
-                <div className="pl-3">{`"version": "${selectedDoc.version}",`}</div>
-                <div className="pl-3">{`"type_definitions": ${selectedDoc.endpointsCount},`}</div>
-                <div className="pl-3">{`"format": "AST_OPTIMIZED_V2"`}</div>
-                <div>{`}`}</div>
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-neutral-300/70">
-              <button
-                type="button"
-                onClick={() => setSelectedDoc(null)}
-                className="h-8 px-3 rounded-lg text-xs font-medium text-neutral-600 hover:text-neutral-900 transition-colors cursor-pointer"
-              >
-                Cerrar
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleCopyEndpoint(selectedDoc)}
-                className={`h-8 px-3.5 rounded-lg text-xs font-medium tracking-tight transition-all flex items-center gap-1.5 cursor-pointer shadow-xs ${
-                  isCopied
-                    ? "bg-emerald-600 text-white"
-                    : "bg-[#2496ED] hover:bg-[#1f84d1] text-white active:scale-95"
-                }`}
-              >
-                {isCopied ? "¡Endpoint copiado!" : "Copiar endpoint"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Footer */}
       <Footer />

@@ -1,47 +1,22 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-
-const MANIFESTO_TEXT =
-  "Documentation was built to guide human developers through tutorials and conversational prose. But AI coding agents don't need tutorials—they need exact compiler constraints. Remora compiles codebases into type-safe AST endpoints, eliminating token waste and giving machines the pure schema contracts they need to build without hallucinating.";
+import React, { useMemo } from "react";
+import { useScrollProgress } from "@/logic/animation";
+import { MANIFESTO_TEXT } from "@/logic/content";
 
 export function Why() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-
-  const words = MANIFESTO_TEXT.split(" ");
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const el = containerRef.current;
-      if (!el) return;
-
-      const rect = el.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      // Start transition when the container enters the upper-middle of viewport
-      const startOffset = windowHeight * 0.7;
-      const scrollDistance = rect.height - windowHeight * 0.6;
-
-      const currentScroll = startOffset - rect.top;
-      const rawProgress = currentScroll / Math.max(1, scrollDistance);
-      const clamped = Math.min(1, Math.max(0, rawProgress));
-
-      setProgress(clamped);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { containerRef, progress } = useScrollProgress();
+  const words = useMemo(() => MANIFESTO_TEXT.split(" "), []);
 
   return (
     <section id="why" ref={containerRef} className="relative h-[150vh] sm:h-[170vh]">
       {/* Sticky centered viewport stage */}
       <div className="sticky top-[28vh] sm:top-[30vh] max-w-3xl mx-auto py-6">
-        {/* Subtle section label */}
-        <div className="text-[12px] font-mono uppercase tracking-wider text-neutral-400 mb-5">
-          Why Remora
+        {/* Section title matching other landing sections */}
+        <div className="mb-4">
+          <h2 className="text-[17px] sm:text-[19px] font-semibold tracking-[-0.02em] text-neutral-950">
+            Why Remora
+          </h2>
         </div>
 
         {/* Scroll-revealing manifesto paragraph */}

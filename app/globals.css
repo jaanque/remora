@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, -system-ui, "Inter", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-mono: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, -system-ui, "Inter", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+}
+
 :root {
   --background: #f2f2f2;
   --foreground: #09090b;
@@ -9,26 +14,30 @@ html {
   scroll-behavior: smooth;
 }
 
-* {
+*,
+*::before,
+*::after {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, -system-ui, "Inter", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
 }
 
-::selection {
-  background-color: #2496ED;
-  color: #ffffff;
-}
-
-::-moz-selection {
-  background-color: #2496ED;
-  color: #ffffff;
+body,
+button,
+input,
+select,
+textarea,
+pre,
+code,
+kbd,
+samp {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, -system-ui, "Inter", "Segoe UI", Roboto, "Helvetica Neue", sans-serif !important;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", -system-ui, "Inter", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   letter-spacing: -0.014em;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11", "calt", "kern";
 }

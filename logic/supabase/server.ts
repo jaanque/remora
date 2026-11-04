@@ -9,7 +9,7 @@ export async function createClient() {
 
   if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error(
-      "No se encontraron las credenciales de Supabase en las variables de entorno. Asegúrate de configurar NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY en tu archivo .env.local"
+      "No se encontraron las credenciales de Supabase en las variables de entorno. Asegúrate de configurar NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY en tu archivo .env"
     );
   }
 
@@ -31,3 +31,4 @@ export async function createClient() {
     },
   });
 }
+

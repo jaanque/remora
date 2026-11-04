@@ -219,3 +219,60 @@ export function ResendLogo({ className = "w-8 h-8" }: { className?: string }) {
   );
 }
 
+export function renderPlatformLogo(
+  logoKey?: string,
+  className: string = "w-8 h-8"
+): React.ReactNode {
+  switch (logoKey?.toLowerCase()) {
+    case "stripe":
+      return <StripeLogo className={className} />;
+    case "github":
+      return <GitHubLogo className={className} />;
+    case "supabase":
+      return <SupabaseLogo className={className} />;
+    case "openai":
+      return <OpenAiLogo className={className} />;
+    case "anthropic":
+      return <AnthropicLogo className={className} />;
+    case "nextjs":
+      return <NextjsLogo className={className} />;
+    case "docker":
+      return <DockerLogo className={className} />;
+    case "linear":
+      return <LinearLogo className={className} />;
+    case "prisma":
+      return <PrismaLogo className={className} />;
+    case "cloudflare":
+      return <CloudflareLogo className={className} />;
+    case "tailwind":
+      return <TailwindLogo className={className} />;
+    case "typescript":
+      return <TypeScriptLogo className={className} />;
+    case "postgres":
+    case "postgresql":
+      return <PostgresLogo className={className} />;
+    case "redis":
+      return <RedisLogo className={className} />;
+    case "vercel":
+      return <VercelLogo className={className} />;
+    case "aws":
+      return <AwsLogo className={className} />;
+    case "huggingface":
+      return <HuggingFaceLogo className={className} />;
+    case "resend":
+      return <ResendLogo className={className} />;
+    default:
+      return (
+        <div
+          className={`${className} rounded-lg bg-neutral-200/90 border border-neutral-300 flex items-center justify-center font-bold text-neutral-600 text-[11px] uppercase tracking-wider select-none`}
+        >
+          {logoKey ? logoKey.slice(0, 2) : "DOC"}
+        </div>
+      );
+  }
+}
+
+export { getPlatformColor } from "@/logic/docs/colors";
+
+
+

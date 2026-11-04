@@ -8,7 +8,6 @@ import { HowItWorks } from "@/components/sections/how-it-works/HowItWorks";
 import { DocsExplorer } from "@/components/sections/docs/DocsExplorer";
 import { AgentFeatures } from "@/components/sections/capabilities/AgentFeatures";
 import { Why } from "@/components/sections/why/Why";
-import { SocialProof } from "@/components/sections/social-proof/SocialProof";
 import { Faq } from "@/components/sections/faq/Faq";
 
 export function HomeView() {
@@ -26,12 +25,7 @@ export function HomeView() {
           <Why />
         </div>
 
-        {/* 6. Reviews / Social Proof: Dedicated width with sticky companion sidebar */}
-        <div className="max-w-5xl mx-auto px-6">
-          <SocialProof />
-        </div>
-
-        {/* 7. FAQ & Technical Architecture */}
+        {/* 6. FAQ & Technical Architecture */}
         <div className="max-w-3xl mx-auto px-6">
           <Faq />
         </div>

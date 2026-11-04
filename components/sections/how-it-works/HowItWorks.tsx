@@ -37,7 +37,7 @@ export function HowItWorks() {
             key={item.step}
             className="rounded-[14px] border border-neutral-300/80 bg-[#f2f2f2] p-4 sm:p-4.5 flex items-start gap-4 hover:border-neutral-400 transition-colors"
           >
-            <span className="font-mono text-xs font-semibold text-[#2496ED] shrink-0 mt-0.5">
+            <span className="text-xs font-semibold text-[#2496ED] shrink-0 mt-0.5">
               {item.step}
             </span>
             <div>

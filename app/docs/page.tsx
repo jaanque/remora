@@ -1,4 +1,5 @@
 import { DocsDirectoryView } from "@/components/docs/DocsDirectoryView";
+import { fetchDocsServer } from "@/logic/docs/docs-server";
 
 export const metadata = {
   title: "Compiled Documentation — Remora",
@@ -6,7 +7,7 @@ export const metadata = {
     "Directorio de esquemas nativos y especificaciones compiladas para agentes de inteligencia artificial y LLMs.",
 };
 
-export default function DocsPage() {
-  return <DocsDirectoryView />;
+export default async function DocsPage() {
+  const docs = await fetchDocsServer();
+  return <DocsDirectoryView initialDocs={docs} />;
 }
-
